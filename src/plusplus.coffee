@@ -55,6 +55,15 @@ module.exports = (robot) ->
     unless name? && name != ''
       [name, lastReason] = scoreKeeper.last(room)
       reason = lastReason if !reason? && lastReason?
+    
+    # only ++ or -- actual users
+    user = robot.brain.userForName(name)
+    if user == null
+      return
+      
+    # use the normalized username 
+    name = user.name
+      
 
     # do the {up, down}vote, and figure out what the new score is
     [score, reasonScore] = if operator == "++"
